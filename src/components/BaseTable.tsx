@@ -13,8 +13,6 @@ const BaseTable = ({ column, data, loading, className }: Props) => {
       <thead className="text-xs  uppercase  bg-gray-50 rounded-t-full  ">
         <tr>
           {column.map((val) => {
-            console.log({ val });
-
             return <th className="px-6 py-3 font-extrabold">{val.title}</th>;
           })}
         </tr>

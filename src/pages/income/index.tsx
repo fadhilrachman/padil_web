@@ -4,7 +4,7 @@ import BaseTable from "../../components/BaseTable";
 import BaseButton from "../../components/form/BaseButton";
 import BaseInput from "../../components/form/BaseInput";
 import Column from "../../utils/interfaces/column";
-const Expense = () => {
+const Income = () => {
   const column: Column[] = [
     {
       title: "Name",
@@ -33,10 +33,10 @@ const Expense = () => {
   const data: any = [];
   return (
     <div>
-      <h3 className="font-bold text-xl">Expense</h3>
+      <h3 className="font-bold text-xl">Income</h3>
       <div className="flex items-center justify-between mt-5">
-        <BaseInput className="" placeholder="Search Expense" />
-        <Link to="/expense-create">
+        <BaseInput className="" placeholder="Search Income" />
+        <Link to="/income-create">
           <BaseButton className="">Insert Data</BaseButton>
         </Link>
       </div>
@@ -46,4 +46,4 @@ const Expense = () => {
   );
 };
 
-export default Expense;
+export default Income;

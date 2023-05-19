@@ -40,7 +40,7 @@ const Sidebar = () => {
               <Link to={val.path}>
                 <li
                   className={`my-8 flex items-center hover:cursor-pointer font-bold ${
-                    location.pathname === val.path
+                    location.pathname.split("-")[0] === val.path
                       ? "text-white"
                       : "text-[#CCCCCC]"
                   }  hover:text-white`}

@@ -9,7 +9,7 @@ interface Props {
 const BaseInput = ({ className, onChange, placeholder, type }: Props) => {
   return (
     <input
-      className={`${className} shadow w-min  border rounded  py-3 px-3 text-gray-700 bg-white focus:outline-none focus:shadow-outline`}
+      className={`${className} shadow   border rounded  py-2 px-3 text-gray-700 bg-white focus:outline-none focus:shadow-outline`}
       onChange={onChange}
       type={type}
       placeholder={placeholder}

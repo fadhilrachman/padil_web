@@ -5,11 +5,18 @@ interface Props {
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   className?: string;
   type?: "button" | "submit" | "reset" | undefined;
+  variant?: "white" | "red";
 }
-const BaseButton = ({ children, onClick, className, type }: Props) => {
+const BaseButton = ({ children, onClick, className, type, variant }: Props) => {
+  const variants =
+    variant === "white"
+      ? "bg-white text-gray-600 shadow"
+      : variant === "red"
+      ? "bg-red-600 text-white"
+      : "bg-violet-500 text-white";
   return (
     <button
-      className={`${className} bg-violet-500 text-white font-bold rounded py-3 px-3`}
+      className={`${className} ${variants}   font-bold rounded py-3 px-3`}
       onClick={onClick}
       type={type}
     >
