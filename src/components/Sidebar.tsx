@@ -11,7 +11,6 @@ interface List {
 }
 const Sidebar = () => {
   const location = useLocation();
-  console.log({ location });
 
   const listSidebar: List[] = [
     {
