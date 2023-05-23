@@ -5,35 +5,43 @@ import axios from "axios";
 interface AuthState {
   status: string;
   data: any[]; // Ganti dengan tipe data yang sesuai
+  errMessage: string | undefined | null | any;
 }
-export const login = createAsyncThunk(
-  "/auth-login",
+export const signIn = createAsyncThunk(
+  "/login",
   async (param: LoginInterface) => {
     const result = await axios.post(
       `${process.env.REACT_APP_API}/login`,
       param
     );
-    return result.data;
+    console.log({ result });
+
+    return result;
   }
 );
+const initialState: AuthState = {
+  status: "",
+  data: [],
+  errMessage: null,
+};
 
 const AuthSlice = createSlice({
   name: "test",
-  initialState: {
-    status: "",
-    data: [],
-  },
+  initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(login.pending, (state) => {
+    builder.addCase(signIn.pending, (state) => {
       state.status = "loading";
+      state.errMessage = null;
     });
-    builder.addCase(login.fulfilled, (state, action) => {
+    builder.addCase(signIn.fulfilled, (state, action) => {
       state.status = "succes";
-      state.data = action.payload;
+      state.errMessage = null;
+      state.data = action.payload.data;
     });
-    builder.addCase(login.rejected, (state) => {
+    builder.addCase(signIn.rejected, (state, action) => {
       state.status = "error";
+      state.errMessage = action;
     });
   },
 });

@@ -5,7 +5,16 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { Link } from "react-router-dom";
 import { LoginInterface } from "../../utils/interfaces/user";
+import { signIn } from "../../redux/AuthSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../redux/reducers";
+import { ThunkDispatch, AnyAction } from "@reduxjs/toolkit";
+import toast, { Toaster } from "react-hot-toast";
+
 const Login = () => {
+  const dispatch: ThunkDispatch<RootState, undefined, AnyAction> =
+    useDispatch();
+  const auth = useSelector((state: RootState) => state.Auth);
   const initialValues: LoginInterface = {
     email: "",
     password: "",
@@ -18,18 +27,21 @@ const Login = () => {
         .required("password tidak boleh kosong")
         .min(6, "password minimal 6 karakter"),
     }),
-    onSubmit: (val: LoginInterface) => {
-      alert(val);
+    onSubmit: async (val: LoginInterface) => {
+      await dispatch(signIn(val));
+      if (auth.errMessage) {
+        toast.error(auth?.errMessage);
+      }
     },
   });
-  console.log(formik.values);
+  console.log({ auth });
 
   return (
-    <div className="h-screen   ">
+    <div className="bg-  ">
       <div className="bg-[#5A57FF] h-[150vh]  rounded-r-full flex lg:w-[500px]  items-center fixed   -top-36">
         <div className=" bg-white w-6/12 h-3/6 rounded-r-full">{""}</div>
       </div>
-      <div className="absolute right-64 top-36">
+      <div className="absolute right-64 top-36 ">
         <h1 className="text-[#5A57FF] text-7xl font-bold text-center ">
           Login
         </h1>
@@ -66,6 +78,7 @@ const Login = () => {
           </small>
         </form>
       </div>
+      <Toaster position="top-right" reverseOrder={false} />
     </div>
   );
 };
