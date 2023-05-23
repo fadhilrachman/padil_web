@@ -29,6 +29,7 @@ const Sidebar = () => {
       path: "/expense",
     },
   ];
+  console.log(process.env.REACT_APP_API);
 
   return (
     <div className="h-screen bg-white bg-gradient-to-b from-violet-500 to-[#5A57FF] w-max text-white py-10 pl-16 px-10 rounded-r-3xl">

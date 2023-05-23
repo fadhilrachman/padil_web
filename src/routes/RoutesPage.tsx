@@ -4,29 +4,32 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import listRoutes from "./listRoutes";
 import AuthRoutes from "./AuthRoutes";
 import { getToken } from "../utils";
+import Playground from "../pages/Playground";
 const RoutesPage = () => {
   const token = getToken();
-  console.log({ token });
 
   return (
-    <>
-      <Suspense fallback={<></>}>
+    <div className="font-index">
+      <Suspense fallback={<>caisdoasdo</>}>
         {token ? (
           <Layout>
             <Routes>
               {listRoutes.map((val, key) => (
-                <Route path={val.path} key={key} />
+                <Route path={val.path} key={key} element={val.component} />
               ))}
             </Routes>
           </Layout>
         ) : (
           <>
-            <Navigate to="/login" />
+            {/* <Navigate to="/login" /> */}
             <AuthRoutes />
           </>
         )}
+        <Routes>
+          <Route path="/playground" element={<Playground />} />
+        </Routes>
       </Suspense>
-    </>
+    </div>
   );
 };
 
