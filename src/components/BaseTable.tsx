@@ -13,7 +13,11 @@ const BaseTable = ({ column, data, loading, className }: Props) => {
       <thead className="text-xs  uppercase  bg-gray-50 rounded-t-full  ">
         <tr>
           {column.map((val) => {
-            return <th className="px-6 py-3 font-extrabold">{val.title}</th>;
+            return (
+              <th className="px-6 py-3 font-extrabold text-center">
+                {val.title}
+              </th>
+            );
           })}
         </tr>
       </thead>
@@ -25,9 +29,17 @@ const BaseTable = ({ column, data, loading, className }: Props) => {
             </td>
           ) : (
             data?.map((val: any) =>
-              column.map((valColumn) => {
-                return <td className="px-6 py-4">{val[valColumn?.index]}</td>;
-              })
+              column.map((valColumn) =>
+                valColumn.render ? (
+                  <td className="px-6 py-4 text-center">
+                    {valColumn.render(val)}
+                  </td>
+                ) : (
+                  <td className="px-6 py-4 text-center">
+                    {val[valColumn?.index]}
+                  </td>
+                )
+              )
             )
           )}
         </tr>

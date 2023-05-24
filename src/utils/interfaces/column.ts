@@ -1,9 +1,9 @@
-import React from "react";
+import React, { ReactElement } from "react";
 
 interface Column {
   index: string;
   title?: string;
-  render?: React.ReactNode;
+  render?: any;
 }
 
 export default Column;

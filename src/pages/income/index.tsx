@@ -1,34 +1,54 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import BaseTable from "../../components/BaseTable";
 import BaseButton from "../../components/form/BaseButton";
 import BaseInput from "../../components/form/BaseInput";
 import Column from "../../utils/interfaces/column";
+import { useDispatch, useSelector } from "react-redux";
+import { ThunkDispatch, AnyAction } from "@reduxjs/toolkit";
+import { RootState } from "../../redux/reducers";
+import { getDataIncome } from "../../redux/IncomeSlice";
+
 const Income = () => {
+  const dispatch: ThunkDispatch<RootState, undefined, AnyAction> =
+    useDispatch();
+  const income = useSelector((state: RootState) => state.Income);
+  const dataIncome = income.data;
+
   const column: Column[] = [
     {
-      title: "Name",
-      index: "name",
+      title: "Tanggal",
+      index: "tanggal",
     },
     {
-      title: "Color",
-      index: "color",
+      title: "Total Pemasukan",
+      index: "total_pemasukan",
     },
     {
-      title: "Type",
-      index: "type",
+      title: "Deskripsi",
+      index: "deskripsi",
     },
     {
-      title: "Price",
+      title: "Action",
       index: "price",
+      render: (param: any) => {
+        console.log({ param });
+
+        return (
+          <div className="flex justify-center">
+            <BaseButton variant="white" className="mr-3">
+              Update
+            </BaseButton>
+            <BaseButton variant="red">Delete</BaseButton>
+          </div>
+        );
+      },
     },
   ];
-  // {
-  //   name: "Apple MacBook Pro 17",
-  //   color: "purple",
-  //   type: "	Accessories",
-  //   price: 22999,
-  // },
+  useEffect(() => {
+    dispatch(getDataIncome());
+  }, []);
+  console.log({ dataIncome });
 
   const data: any = [];
   return (
@@ -41,7 +61,12 @@ const Income = () => {
         </Link>
       </div>
 
-      <BaseTable column={column} className="mt-5" data={data} />
+      <BaseTable
+        column={column}
+        className="mt-5"
+        data={dataIncome}
+        loading={true}
+      />
     </div>
   );
 };
