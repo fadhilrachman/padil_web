@@ -6,6 +6,7 @@ import {
 } from "@reduxjs/toolkit";
 import { LoginInterface, RegisterInterface } from "../utils/interfaces/user";
 import axios, { AxiosError } from "axios";
+import { getToken } from "../utils";
 
 interface ResponLogin {
   token: string;
@@ -18,6 +19,8 @@ interface AuthState {
   data: ResponLogin; // Ganti dengan tipe data yang sesuai
   errMessage: string | undefined | null | any;
 }
+
+const token = getToken();
 export const signIn = createAsyncThunk(
   "/login",
   async (param: LoginInterface, { rejectWithValue }) => {
@@ -46,6 +49,19 @@ export const signUp = createAsyncThunk(
     }
   }
 );
+
+export const logout = createAsyncThunk("/logout", async () => {
+  const result = await axios.post(
+    `${process.env.REACT_APP_API}/logout`,
+    {},
+    {
+      headers: {
+        Authorization: token,
+      },
+    }
+  );
+  return result;
+});
 const initialState: AuthState = {
   statusLogin: "",
   statusRegister: "",
@@ -81,6 +97,18 @@ const AuthSlice = createSlice({
     });
     builder.addCase(signUp.rejected, (state, action) => {
       state.statusRegister = "error";
+      state.errMessage = action.payload;
+    });
+    builder.addCase(logout.pending, (state) => {
+      state.statusLogin = "loading";
+      state.errMessage = null;
+    });
+    builder.addCase(logout.fulfilled, (state, action) => {
+      state.statusLogin = "succes";
+      state.errMessage = null;
+    });
+    builder.addCase(logout.rejected, (state, action) => {
+      state.statusLogin = "error";
       state.errMessage = action.payload;
     });
   },

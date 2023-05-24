@@ -48,6 +48,7 @@ const Login = () => {
       if (auth.statusLogin === "succes") {
         localStorage.setItem("token", (auth.data as ResponLogin)?.token);
         navigate("/dashboard");
+        window.location.reload();
       }
     }
     console.log({ auth: auth });

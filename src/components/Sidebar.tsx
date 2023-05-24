@@ -4,6 +4,11 @@ import expenseLogo from "../assets/expenseLogo.svg";
 import incomeLogo from "../assets/incomeLogo.svg";
 import logoutIcon from "../assets/logoutIcon.svg";
 import { Link, useLocation } from "react-router-dom";
+import { ThunkDispatch, AnyAction } from "@reduxjs/toolkit";
+import { useDispatch } from "react-redux";
+import { RootState } from "../redux/reducers";
+import { logout } from "../redux/AuthSlice";
+import { useNavigate } from "react-router-dom";
 interface List {
   path: string;
   name: string;
@@ -11,7 +16,9 @@ interface List {
 }
 const Sidebar = () => {
   const location = useLocation();
-
+  const navigate = useNavigate();
+  const dispatch: ThunkDispatch<RootState, undefined, AnyAction> =
+    useDispatch();
   const listSidebar: List[] = [
     {
       name: "Dashboard",
@@ -30,6 +37,13 @@ const Sidebar = () => {
     },
   ];
   console.log(process.env.REACT_APP_API);
+
+  const handleLogout = async () => {
+    await dispatch(logout());
+    await localStorage.removeItem("token");
+    navigate("/login");
+    window.location.reload();
+  };
 
   return (
     <div className="h-screen bg-white bg-gradient-to-b from-violet-500 to-[#5A57FF] w-max text-white py-10 pl-16 px-10 rounded-r-3xl">
@@ -56,7 +70,10 @@ const Sidebar = () => {
       </div>
       <div className="mt-64">
         <ul>
-          <li className="my-8 flex items-center hover:cursor-pointer font-bold ">
+          <li
+            className="my-8 flex items-center hover:cursor-pointer font-bold "
+            onClick={handleLogout}
+          >
             <img src={logoutIcon} alt="" className="mr-5 " />
             <span>Logout</span>
           </li>
