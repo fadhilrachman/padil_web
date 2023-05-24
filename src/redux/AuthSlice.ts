@@ -1,27 +1,55 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { LoginInterface } from "../utils/interfaces/user";
-import axios from "axios";
+import {
+  createAsyncThunk,
+  createSlice,
+  isRejectedWithValue,
+  PayloadAction,
+} from "@reduxjs/toolkit";
+import { LoginInterface, RegisterInterface } from "../utils/interfaces/user";
+import axios, { AxiosError } from "axios";
+
+interface ResponLogin {
+  token: string;
+  message?: string;
+}
 
 interface AuthState {
-  status: string;
-  data: any[]; // Ganti dengan tipe data yang sesuai
+  statusLogin: string;
+  statusRegister: string;
+  data: ResponLogin; // Ganti dengan tipe data yang sesuai
   errMessage: string | undefined | null | any;
 }
 export const signIn = createAsyncThunk(
   "/login",
-  async (param: LoginInterface) => {
-    const result = await axios.post(
-      `${process.env.REACT_APP_API}/login`,
-      param
-    );
-    console.log({ result });
-
-    return result;
+  async (param: LoginInterface, { rejectWithValue }) => {
+    try {
+      const result = await axios.post(
+        `${process.env.REACT_APP_API}/login`,
+        param
+      );
+      return result;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+export const signUp = createAsyncThunk(
+  "/register",
+  async (param: RegisterInterface, { rejectWithValue }) => {
+    try {
+      const result = await axios.post(
+        `${process.env.REACT_APP_API}/register`,
+        param
+      );
+      return result;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.message);
+    }
   }
 );
 const initialState: AuthState = {
-  status: "",
-  data: [],
+  statusLogin: "",
+  statusRegister: "",
+  data: { token: "" },
   errMessage: null,
 };
 
@@ -31,17 +59,29 @@ const AuthSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(signIn.pending, (state) => {
-      state.status = "loading";
+      state.statusLogin = "loading";
       state.errMessage = null;
     });
     builder.addCase(signIn.fulfilled, (state, action) => {
-      state.status = "succes";
+      state.statusLogin = "succes";
       state.errMessage = null;
       state.data = action.payload.data;
     });
     builder.addCase(signIn.rejected, (state, action) => {
-      state.status = "error";
-      state.errMessage = action;
+      state.statusLogin = "error";
+      state.errMessage = action.payload;
+    });
+    builder.addCase(signUp.pending, (state) => {
+      state.statusRegister = "loading";
+      state.errMessage = null;
+    });
+    builder.addCase(signUp.fulfilled, (state, action) => {
+      state.statusRegister = "succes";
+      state.errMessage = null;
+    });
+    builder.addCase(signUp.rejected, (state, action) => {
+      state.statusRegister = "error";
+      state.errMessage = action.payload;
     });
   },
 });

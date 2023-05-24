@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import BaseButton from "../../components/form/BaseButton";
 import BaseInput from "../../components/form/BaseInput";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { LoginInterface } from "../../utils/interfaces/user";
 import { signIn } from "../../redux/AuthSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,7 +11,13 @@ import { RootState } from "../../redux/reducers";
 import { ThunkDispatch, AnyAction } from "@reduxjs/toolkit";
 import toast, { Toaster } from "react-hot-toast";
 
+interface ResponLogin {
+  token: string;
+  message: string;
+}
+
 const Login = () => {
+  const navigate = useNavigate();
   const dispatch: ThunkDispatch<RootState, undefined, AnyAction> =
     useDispatch();
   const auth = useSelector((state: RootState) => state.Auth);
@@ -29,12 +35,23 @@ const Login = () => {
     }),
     onSubmit: async (val: LoginInterface) => {
       await dispatch(signIn(val));
-      if (auth.errMessage) {
-        toast.error(auth?.errMessage);
-      }
     },
   });
-  console.log({ auth });
+
+  useEffect(() => {
+    if (formik.isSubmitting) {
+      if (auth.statusLogin === "error") {
+        toast.error(auth.errMessage, {
+          duration: 1000,
+        });
+      }
+      if (auth.statusLogin === "succes") {
+        localStorage.setItem("token", (auth.data as ResponLogin)?.token);
+        navigate("/dashboard");
+      }
+    }
+    console.log({ auth: auth });
+  }, [auth.statusLogin]);
 
   return (
     <div className="bg-  ">
@@ -70,7 +87,7 @@ const Login = () => {
           <BaseButton className="mt-7">Login</BaseButton>
           <small>
             Don't have account yet?{" "}
-            <Link to="/login">
+            <Link to="/register">
               <a href="" className="text-[#5A57FF]">
                 Register
               </a>
@@ -78,7 +95,7 @@ const Login = () => {
           </small>
         </form>
       </div>
-      <Toaster position="top-right" reverseOrder={false} />
+      <Toaster position="top-right" />
     </div>
   );
 };

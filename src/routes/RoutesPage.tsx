@@ -21,7 +21,6 @@ const RoutesPage = () => {
           </Layout>
         ) : (
           <>
-            {/* <Navigate to="/login" /> */}
             <AuthRoutes />
           </>
         )}
