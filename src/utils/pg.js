@@ -1,8 +1,6 @@
-const komaSatu = [4,7,10,13,16,19,22,25,28]
-const komaDua = [5,8,11,14,17,20,23,26,29]
-const komeTiga = [6,9,12,15,18,21,24,27,30]
-
-
+const komaSatu = [4, 7, 10, 13, 16, 19, 22, 25, 28];
+const komaDua = [5, 8, 11, 14, 17, 20, 23, 26, 29];
+const komeTiga = [6, 9, 12, 15, 18, 21, 24, 27, 30];
 
 const formatRupiah = (param) => {
   const angka = String(param);
@@ -17,8 +15,7 @@ const formatRupiah = (param) => {
   }
   console.log(hasil);
 };
-2,000,000,000
-4 7 10 13 16 19 22
+
 formatRupiah(2000);
 
 const coba = "padil";
