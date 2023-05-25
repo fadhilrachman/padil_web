@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import BaseTable from "../../components/BaseTable";
 import BaseButton from "../../components/form/BaseButton";
@@ -7,13 +7,19 @@ import Column from "../../utils/interfaces/column";
 import { useDispatch, useSelector } from "react-redux";
 import { ThunkDispatch, AnyAction } from "@reduxjs/toolkit";
 import { RootState } from "../../redux/reducers";
-import { getDataIncome } from "../../redux/IncomeSlice";
+import { deleteDataIncome, getDataIncome } from "../../redux/IncomeSlice";
+import ModalDelete from "../../components/ModalDelete";
 
+interface Modal {
+  show: boolean;
+  id: string;
+}
 const Income = () => {
   const dispatch: ThunkDispatch<RootState, undefined, AnyAction> =
     useDispatch();
   const income = useSelector((state: RootState) => state.Income);
   const dataIncome = income.data;
+  const [modal, setModal] = useState<Modal>({ show: false, id: "" });
 
   const column: Column[] = [
     {
@@ -39,7 +45,12 @@ const Income = () => {
             <BaseButton variant="white" className="mr-3">
               Update
             </BaseButton>
-            <BaseButton variant="red">Delete</BaseButton>
+            <BaseButton
+              variant="red"
+              onClick={() => setModal({ show: true, id: param._id })}
+            >
+              Delete
+            </BaseButton>
           </div>
         );
       },
@@ -47,10 +58,14 @@ const Income = () => {
   ];
   useEffect(() => {
     dispatch(getDataIncome());
-  }, []);
-  console.log({ dataIncome });
+  }, [dispatch]);
 
-  const data: any = [];
+  const handleDelete = async () => {
+    dispatch(deleteDataIncome(modal.id));
+
+    setModal({ show: false, id: "" });
+    dispatch(getDataIncome());
+  };
   return (
     <div>
       <h3 className="font-bold text-xl">Income</h3>
@@ -60,7 +75,11 @@ const Income = () => {
           <BaseButton className="">Insert Data</BaseButton>
         </Link>
       </div>
-
+      <ModalDelete
+        show={modal.show}
+        onHide={() => setModal({ ...modal, show: false })}
+        functDelete={handleDelete}
+      />
       <BaseTable
         column={column}
         className="mt-5"

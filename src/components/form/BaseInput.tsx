@@ -6,7 +6,7 @@ interface Props {
   placeholder?: string;
   type?: string;
   isInvalid?: boolean;
-  value?: string | number;
+  value?: string | number | Date;
   errMessage?: string;
   name?: string;
 }
@@ -19,7 +19,7 @@ const BaseInput = ({
   value,
   name,
 }: Props) => {
-  const color = "";
+  const formattedValue = value instanceof Date ? value.toISOString() : value;
   return (
     <>
       <input
@@ -30,7 +30,7 @@ const BaseInput = ({
         type={type}
         name={name}
         placeholder={placeholder}
-        value={value}
+        value={formattedValue}
       />
       {errMessage && <small className="text-red-500">{errMessage}</small>}
     </>

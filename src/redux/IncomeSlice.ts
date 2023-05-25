@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { getToken } from "../utils";
-
+import IncomeInterface from "../utils/interfaces/income";
 const token = getToken();
 
 export const getDataIncome = createAsyncThunk("/pemasukan", async () => {
@@ -12,6 +12,36 @@ export const getDataIncome = createAsyncThunk("/pemasukan", async () => {
   });
   return result;
 });
+export const createDataIncome = createAsyncThunk(
+  "/pemasukan-create",
+  async (val: IncomeInterface) => {
+    const result = await axios.post(
+      `${process.env.REACT_APP_API}/pemasukan`,
+      val,
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+    return result;
+  }
+);
+
+export const deleteDataIncome = createAsyncThunk(
+  "/pemasukan-delete",
+  async (id: string) => {
+    const result = await axios.delete(
+      `${process.env.REACT_APP_API}/pemasukan/${id}`,
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+    return result;
+  }
+);
 
 const IncomeSlice = createSlice({
   name: "pemasukan",
@@ -29,6 +59,24 @@ const IncomeSlice = createSlice({
       state.data = action.payload.data.data;
     });
     builder.addCase(getDataIncome.rejected, (state, action) => {
+      state.status = "error";
+    });
+    builder.addCase(createDataIncome.pending, (state) => {
+      state.status = "loading";
+    });
+    builder.addCase(createDataIncome.fulfilled, (state) => {
+      state.status = "succes";
+    });
+    builder.addCase(createDataIncome.rejected, (state) => {
+      state.status = "error";
+    });
+    builder.addCase(deleteDataIncome.pending, (state) => {
+      state.status = "loading";
+    });
+    builder.addCase(deleteDataIncome.fulfilled, (state) => {
+      state.status = "succes";
+    });
+    builder.addCase(deleteDataIncome.rejected, (state) => {
       state.status = "error";
     });
   },

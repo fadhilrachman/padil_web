@@ -1,8 +1,7 @@
-interface Income {
-  id: string;
+interface IncomeInterface {
   total_pemasukan: number;
   tanggal: string;
   deskripsi: string;
 }
 
-export default Income;
+export default IncomeInterface;

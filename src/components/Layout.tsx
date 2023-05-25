@@ -6,7 +6,7 @@ function Layout({ children }: { children?: React.ReactNode }) {
   return (
     <div className="flex font-index bg-slate-100">
       <Sidebar />
-      <div className="w-full">
+      <div className="w-full overflow-y-auto ml-56">
         <Navbar />
         <div className="p-10">{children}</div>
       </div>

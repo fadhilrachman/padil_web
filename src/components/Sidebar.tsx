@@ -46,7 +46,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="h-screen bg-white bg-gradient-to-b from-violet-500 to-[#5A57FF] w-max text-white py-10 pl-16 px-10 rounded-r-3xl">
+    <div className="h-screen bg-white bg-gradient-to-b from-violet-500 to-[#5A57FF] fixed  w-max text-white py-10 pl-16 px-10 rounded-r-3xl">
       <span className="text-2xl font-bold"> Dashboard</span>
       <div className="mt-20">
         <ul>

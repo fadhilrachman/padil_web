@@ -22,14 +22,16 @@ const BaseTable = ({ column, data, loading, className }: Props) => {
         </tr>
       </thead>
       <tbody>
-        <tr className="bg-white   font-">
-          {data?.length === 0 ? (
+        {data?.length === 0 ? (
+          <tr className="bg-white   font-">
             <td className="px-6 py-4 text-center" colSpan={column.length}>
               Tidak ada Data
             </td>
-          ) : (
-            data?.map((val: any) =>
-              column.map((valColumn) =>
+          </tr>
+        ) : (
+          data?.map((val: any) => (
+            <tr className="bg-white   font-">
+              {column.map((valColumn) =>
                 valColumn.render ? (
                   <td className="px-6 py-4 text-center">
                     {valColumn.render(val)}
@@ -39,10 +41,10 @@ const BaseTable = ({ column, data, loading, className }: Props) => {
                     {val[valColumn?.index]}
                   </td>
                 )
-              )
-            )
-          )}
-        </tr>
+              )}
+            </tr>
+          ))
+        )}
       </tbody>
     </table>
   );
