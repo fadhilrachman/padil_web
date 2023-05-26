@@ -9,6 +9,7 @@ import { ThunkDispatch, AnyAction } from "@reduxjs/toolkit";
 import { RootState } from "../../redux/reducers";
 import { deleteDataIncome, getDataIncome } from "../../redux/IncomeSlice";
 import ModalDelete from "../../components/ModalDelete";
+import { convertDate } from "../../utils";
 
 interface Modal {
   show: boolean;
@@ -25,6 +26,11 @@ const Income = () => {
     {
       title: "Tanggal",
       index: "tanggal",
+      render: (val: any, item: Date) => {
+        console.log({ item });
+
+        return <>{convertDate(item)}</>;
+      },
     },
     {
       title: "Total Pemasukan",
@@ -38,8 +44,6 @@ const Income = () => {
       title: "Action",
       index: "price",
       render: (param: any) => {
-        console.log({ param });
-
         return (
           <div className="flex justify-center">
             <BaseButton variant="white" className="mr-3">

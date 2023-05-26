@@ -1,44 +1,42 @@
 import React, { ChangeEvent } from "react";
 
 interface Props {
-  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (event: ChangeEvent<HTMLSelectElement>) => void;
   className?: string;
-  placeholder?: string;
-  type?: string;
-  isInvalid?: boolean;
-  value?: string | number | Date;
+  value?: string;
   errMessage?: string;
+  isInvalid: boolean;
   name?: string;
-  onBlur?: React.FocusEventHandler<HTMLInputElement>;
+  onBlur?: React.FocusEventHandler<HTMLSelectElement>;
+  children: React.ReactNode;
 }
-const BaseInput = ({
+const BaseSelect = ({
   className,
   onChange,
-  placeholder,
-  type,
   errMessage,
   value,
-  isInvalid,
   name,
+  isInvalid,
+  children,
   onBlur,
 }: Props) => {
-  const formattedValue = value instanceof Date ? value.toISOString() : value;
   return (
     <>
-      <input
+      <select
         className={`${className} ${
           isInvalid ? "border-red-500" : ""
         } shadow   border rounded  py-2 px-3 text-gray-700 bg-white focus:outline-none focus:shadow-outline`}
         onChange={onChange}
-        type={type}
         name={name}
-        placeholder={placeholder}
-        value={formattedValue}
+        value={value}
         onBlur={onBlur}
-      />
+      >
+        {children}
+      </select>
+
       {isInvalid && <small className="text-red-500">{errMessage}</small>}
     </>
   );
 };
 
-export default BaseInput;
+export default BaseSelect;

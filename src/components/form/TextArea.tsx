@@ -7,6 +7,8 @@ interface Props {
   errMessage?: string;
   name?: string;
   value?: string;
+  isInvalid?: boolean;
+  onBlur?: React.FocusEventHandler<HTMLTextAreaElement>;
 }
 const TextArea = ({
   className,
@@ -14,20 +16,23 @@ const TextArea = ({
   placeholder,
   errMessage,
   name,
+  isInvalid,
   value,
+  onBlur,
 }: Props) => {
   return (
     <>
       <textarea
         className={`${className} ${
-          errMessage ? "border-red-500" : ""
+          isInvalid ? "border-red-500" : ""
         }  shadow w-full  border rounded  py-2 px-3 text-gray-700 bg-white focus:outline-none focus:shadow-outline`}
         onChange={onChange}
         placeholder={placeholder}
         name={name}
         value={value}
+        onBlur={onBlur}
       ></textarea>
-      {errMessage && <small className="text-red-500">{errMessage}</small>}
+      {isInvalid && <small className="text-red-500">{errMessage}</small>}
     </>
   );
 };

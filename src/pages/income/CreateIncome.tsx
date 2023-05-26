@@ -10,10 +10,7 @@ import { ThunkDispatch, AnyAction } from "@reduxjs/toolkit";
 import { RootState } from "../../redux/reducers";
 import * as Yup from "yup";
 import { createDataIncome } from "../../redux/IncomeSlice";
-
-interface ErrorType {
-  total_pemasukan: string;
-}
+import toast, { Toaster } from "react-hot-toast";
 
 const CreateIncome = () => {
   const date = new Date();
@@ -36,8 +33,8 @@ const CreateIncome = () => {
     },
     onSubmit: async (val, { resetForm }) => {
       await dispatch(createDataIncome(val));
-      // console.log(val);
       resetForm();
+      toast.success(" berhasil membuat data");
     },
     validationSchema: Yup.object({
       total_pemasukan: Yup.number(),
@@ -92,7 +89,7 @@ const CreateIncome = () => {
           />
         </div>
         <div className="mt-7 flex justify-end">
-          <Link to="/expense">
+          <Link to="/income">
             <BaseButton className=" mr-4" variant="white">
               Back
             </BaseButton>
@@ -100,6 +97,7 @@ const CreateIncome = () => {
           <BaseButton type="submit">Submit</BaseButton>
         </div>
       </form>
+      <Toaster position="top-right" />
     </div>
   );
 };

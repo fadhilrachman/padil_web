@@ -34,7 +34,7 @@ const BaseTable = ({ column, data, loading, className }: Props) => {
               {column.map((valColumn) =>
                 valColumn.render ? (
                   <td className="px-6 py-4 text-center">
-                    {valColumn.render(val)}
+                    {valColumn.render(val, val[valColumn?.index])}
                   </td>
                 ) : (
                   <td className="px-6 py-4 text-center">

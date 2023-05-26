@@ -8,7 +8,7 @@ function Layout({ children }: { children?: React.ReactNode }) {
       <Sidebar />
       <div className="w-full overflow-y-auto ml-56">
         <Navbar />
-        <div className="p-10">{children}</div>
+        <div className="p-10 min-h-screen">{children}</div>
       </div>
     </div>
   );
